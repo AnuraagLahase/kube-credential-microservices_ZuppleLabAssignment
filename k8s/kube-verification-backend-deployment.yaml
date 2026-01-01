@@ -1,0 +1,28 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: kube-verification-backend
+  labels:
+    io.kompose.service: kube-verification-backend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      io.kompose.service: kube-verification-backend
+  template:
+    metadata:
+      labels:
+        io.kompose.service: kube-verification-backend
+    spec:
+      containers:
+      - name: kube-verification-backend
+        image: project-kube-verification-backend:latest
+        imagePullPolicy: Never
+        ports:
+        - containerPort: 5002
+        env:
+        - name: ISSUANCE_SERVICE_URL
+          value: http://kube-credential-backend:5001
+        - name: NODE_ENV
+          value: production
+      restartPolicy: Always

@@ -1,0 +1,25 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: backend-ingress
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /
+spec:
+  rules:
+  - host: backend.local
+    http:
+      paths:
+      - path: /credential
+        pathType: Prefix
+        backend:
+          service:
+            name: kube-credential-backend
+            port:
+              number: 5001
+      - path: /verification
+        pathType: Prefix
+        backend:
+          service:
+            name: kube-verification-backend
+            port:
+              number: 5002
